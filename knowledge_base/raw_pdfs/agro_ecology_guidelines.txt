@@ -1,0 +1,11 @@
+Source: FAO Soil Organic Carbon Management Report
+Context: Semi-Arid Regions, Low Rainfall, High Soil pH
+Finding: Introducing legume-based cover crops (e.g., cowpea, alfalfa) in monoculture systems increases soil organic carbon (SOC) by 15-25% over 2-3 years. Legumes fix atmospheric nitrogen, counteracting high soil pH alkalinity and improving microbial diversity.
+
+Source: IPCC Land, Climate & Biodiversity Report
+Context: Monoculture, Habitat Fragmentation, Low Water Availability
+Finding: Transitioning from monoculture to agroforestry or intercropping significantly reduces habitat fragmentation. Diversified root structures improve soil water retention by up to 30%, mitigating the ecological stress of low rainfall and supporting a higher species richness of pollinators.
+
+Source: Global Biodiversity Resilience Study
+Context: Low Habitat Diversity, Degraded Soil
+Finding: Planting native perennial borders around monoculture cash crops provides critical ecological niches. This increases natural pest predator populations, reducing the need for chemical interventions and lowering human-induced pollution impacts on the local ecosystem.

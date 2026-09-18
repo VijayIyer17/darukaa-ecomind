@@ -1,8 +1,12 @@
 import os
+from dotenv import load_dotenv
 from langchain_community.document_loaders import TextLoader, PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import Chroma
+
+# Load environment variables (for local execution)
+load_dotenv()
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -14,14 +18,15 @@ def build_vector_store():
     documents = []
     
     # Load Text files
-    for file in os.listdir(KNOWLEDGE_BASE_DIR):
-        if file.endswith(".txt"):
-            loader = TextLoader(os.path.join(KNOWLEDGE_BASE_DIR, file), encoding="utf-8")
-            documents.extend(loader.load())
-            
-    # Load PDFs (if you add any later)
-    pdf_loader = PyPDFDirectoryLoader(KNOWLEDGE_BASE_DIR)
-    documents.extend(pdf_loader.load())
+    if os.path.exists(KNOWLEDGE_BASE_DIR):
+        for file in os.listdir(KNOWLEDGE_BASE_DIR):
+            if file.endswith(".txt"):
+                loader = TextLoader(os.path.join(KNOWLEDGE_BASE_DIR, file), encoding="utf-8")
+                documents.extend(loader.load())
+                
+        # Load PDFs (if you add any later)
+        pdf_loader = PyPDFDirectoryLoader(KNOWLEDGE_BASE_DIR)
+        documents.extend(pdf_loader.load())
 
     print(f"Loaded {len(documents)} document files.")
 
@@ -34,9 +39,12 @@ def build_vector_store():
     chunks = text_splitter.split_documents(documents)
     print(f"Created {len(chunks)} chunks.")
 
-    print("Initializing embedding model (all-MiniLM-L6-v2)...")
-    # Lightweight, fast, and excellent for semantic search
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    print("Initializing Google Gemini embedding model...")
+    # Swapped from HuggingFace to Gemini to save local server RAM
+    embeddings = GoogleGenerativeAIEmbeddings(
+        model="models/gemini-embedding-001",
+        google_api_key=os.getenv("GOOGLE_API_KEY")
+    )
 
     print("Building ChromaDB vector store...")
     vector_store = Chroma.from_documents(
@@ -49,4 +57,3 @@ def build_vector_store():
 
 if __name__ == "__main__":
     build_vector_store()
-    

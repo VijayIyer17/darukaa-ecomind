@@ -1,8 +1,7 @@
 import os
 from dotenv import load_dotenv
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from app.models.schemas import EnvironmentalInput, AssessmentResponse
 
 # Ensure environment variables are loaded first
@@ -12,8 +11,11 @@ load_dotenv()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_DIR = os.path.abspath(os.path.join(BASE_DIR, "..", "..", "knowledge_base", "vector_store"))
 
-# Initialize Embeddings and Vector Store
-embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+# Initialize Gemini Embeddings (Swapped from HuggingFace to save RAM)
+embeddings = GoogleGenerativeAIEmbeddings(
+    model="models/gemini-embedding-001",
+    google_api_key=os.getenv("GOOGLE_API_KEY")
+)
 vector_store = Chroma(persist_directory=DB_DIR, embedding_function=embeddings)
 
 def analyze_environment(data: EnvironmentalInput) -> AssessmentResponse:
